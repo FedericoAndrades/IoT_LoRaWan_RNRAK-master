@@ -29,8 +29,6 @@
 #define LORA_MAC_SET_DR             "mac set dr 0"
 
 #define null                        0
-
-
 struct loraMensaje {
   unsigned int port;
   char largo_mensaje;
