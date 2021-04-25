@@ -1,6 +1,6 @@
 
 /*
- * LoRa Wan RN_SAMR34
+ * LoRa Wan RN_SAMR34 1.0.2B
  */
 /*
   Copyright (c) 2015 Arduino LLC.  All right reserved.
