@@ -1,6 +1,5 @@
-
 /*
- * LoRa Wan RN_SAMR34 1.0.2B
+ * LoRa Wan RN_SAMR34
  */
 /*
   Copyright (c) 2015 Arduino LLC.  All right reserved.
@@ -22,7 +21,6 @@
 */
 
 #include "IoT_LoRaWan_RNRAK.H"
-
 
 // Public ------------------------------------------------------------------------------
 IoT_LoRaWan_RNRAK::IoT_LoRaWan_RNRAK( )
@@ -73,7 +71,7 @@ int IoT_LoRaWan_RNRAK::begin ( Uart *hwSerial , int resetPIN , int sttsPIN )
   return( setup() );
 }
 
-int IoT_LoRaWan_RNRAK::begin ( Uart *hwSerial , int resetPIN , int sttsPIN  , Serial_ *monSerial )
+int IoT_LoRaWan_RNRAK::begin ( Uart *hwSerial , int resetPIN , int sttsPIN  , Stream *monSerial )
 {
   int i;
   loraSerial = hwSerial;
@@ -129,7 +127,6 @@ int IoT_LoRaWan_RNRAK::getADR( )
 {
   return( lora_ADRmode );
 }
-
 
 int IoT_LoRaWan_RNRAK::joinOTAA( char *setAPPEUI , char *setAPPKEY ) 
 {
@@ -200,7 +197,6 @@ void IoT_LoRaWan_RNRAK::process( void )
         case 2:
             if(( loraWaitResponse(0) )||( millis() >= last_time_check )) {
                 if( strstr( response , LORA_DATA_RECIVE ) != 0 ) {
-                    loraSendmensaje_OK();
                     rx_lora_process();
                 } else if( strstr( response , LORA_INVALID_PARAM ) != 0 ) {
                     pos_lora = 30; // re set DR
@@ -234,7 +230,6 @@ void IoT_LoRaWan_RNRAK::process( void )
         case 3:
             if(( loraWaitResponse(0) )||( millis() >= last_time_check )) {
                 if( strstr( response , LORA_DATA_RECIVE ) != 0 ) {
-                    loraSendmensaje_OK();
                     rx_lora_process();
                 } else if( strstr( response , LORA_INVALID_PARAM ) != 0 ) {
                     pos_lora = 30; // re set DR
@@ -471,9 +466,6 @@ int IoT_LoRaWan_RNRAK::loraSendCommand(char *command)
   return( loraWaitResponse(1000) );
 }
 
-
-
-
 void IoT_LoRaWan_RNRAK::loraSendmensaje ( void )
 {
   char *p,*data;
@@ -701,6 +693,7 @@ int IoT_LoRaWan_RNRAK::runjoinOTAA( void )
     logMonitor->println("[LoRa] Ready ");
   }
   time_to_check_network = millis() +  TIME_OUT_CHECK_NETWORK *  (long)1000;
+  last_time_check = millis() + CADENCIA_TX_MINIMA * 1000;
   pos_lora = 0;
 }
 
@@ -803,6 +796,7 @@ int IoT_LoRaWan_RNRAK::runjoinABP( void )
     logMonitor->println("[LoRa] Ready ");
   }
   time_to_check_network = millis() +  TIME_OUT_CHECK_NETWORK *  (long)1000;
+  last_time_check = millis() + CADENCIA_TX_MINIMA * 1000;
   pos_lora = 0;
 }
 
@@ -901,7 +895,7 @@ void IoT_LoRaWan_RNRAK::MonitorOFF ()
   logMonitor = nullptr;
 }
 
-void IoT_LoRaWan_RNRAK::MonitorON ( Serial_ *monSerial )
+void IoT_LoRaWan_RNRAK::MonitorON ( Stream *monSerial )
 {
   logMonitor = monSerial;
 }

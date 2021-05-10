@@ -29,6 +29,8 @@
 #define LORA_MAC_SET_DR             "mac set dr 0"
 
 #define null                        0
+
+
 struct loraMensaje {
   unsigned int port;
   char largo_mensaje;
@@ -50,7 +52,7 @@ enum MODEJOIN {
 class IoT_LoRaWan_RNRAK {
     private:
         Uart *loraSerial;
-        Serial_ *logMonitor;
+        Stream *logMonitor;
         
         enum CLASS devclassmode;
         enum MODEJOIN devjoin;
@@ -108,7 +110,7 @@ class IoT_LoRaWan_RNRAK {
         void setADR( int mode );
         int getADR();
 
-        virtual int begin ( Uart *hwSerial , int resetPIN , int sttsPIN  , Serial_ *monSerial  );
+        virtual int begin ( Uart *hwSerial , int resetPIN , int sttsPIN  , Stream *monSerial  );
         virtual int begin ( Uart *hwSerial , int resetPIN , int sttsPIN  );
         virtual int begin ( Uart *hwSerial , int resetPIN );
         virtual int begin ( Uart *hwSerial );
@@ -130,5 +132,5 @@ class IoT_LoRaWan_RNRAK {
         int SendCommand( char *comando , char *respuesta );
 
         void MonitorOFF();
-        void MonitorON( Serial_ *monSerial );
+        void MonitorON( Stream *monSerial );
 };
